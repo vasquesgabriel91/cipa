@@ -30,7 +30,7 @@
         <script src="script.js"></script>
         <title>VOTAÇÃO REMOTA - CIPA</title>
     </head>
-
+    .
     <body>
         <div class=" col-sm-12 col-md-12 col-lg-12 d-flex flex-row vw_DataWake">
             <div class="d-flex col-sm-6 col-md-6 col-lg-6 ">
@@ -55,51 +55,3 @@
         </div>
     </body>
 </html>
-<style>
-        .color_DataWake1 {
-            background: linear-gradient(60deg, rgba(3,94,131,1) 0%, rgba(72,199,244,1) 60%);
-        }
-        .form-input input {
-            border-radius: .8rem;
-            border: none;
-            margin-top: 3vh;
-            padding:3%;
-            background-color: #dadadaa4;
-            width: 25vw;
-        }
-        .login-button {
-            color: #ffff;
-            font-weight: 600;
-            text-transform: uppercase;
-            border-radius: 2rem;
-            border: none;
-            margin-top: 6vh;
-            padding:3%;
-            transition: ease-in-out .8s;
-            background-image: linear-gradient(90deg, rgba(3,94,131,1) 0%, rgba(72,199,244,1) 100%);
-        }
-        .login-button:hover{
-            background-image: linear-gradient(90deg,  rgba(72,199,244,1) 60%, rgba(3,94,131,1) 100%);
-        }
-        .form-input a{
-            width: 10vw;
-            margin-top: 2vh;
-            text-decoration: none ;
-        }
-        .background_DataWake{
-            background: linear-gradient(332deg, #ffffff00 0%, #b9b9b928 80%);
-            border-radius: 5%;
-            backdrop-filter: blur(0.6em);
-            width: 30vw;
-            height: 60vh;
-        }
-        .circulo img{
-            padding: 0;
-            margin: 0;
-            width: 80%;
-        }
-        .circulo{
-            background-color: red;
-            border-radius: 20em;
-        }
-</style>

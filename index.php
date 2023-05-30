@@ -14,13 +14,35 @@
                                 
         if ($result) {
 
-            $_SESSION['matricula'] = $result['ZRA_MAT'];
-            $_SESSION['nome'] = $result['ZRA_NOME'];
-                    
+             $_SESSION['matricula'] = $result['ZRA_MAT'];
+             $_SESSION['nome'] = $result['ZRA_NOME'];
+
+            
         } else {
-            echo "Nenhum registro encontrado.";
+            echo'<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var modal = new bootstrap.Modal(document.getElementById("exampleModal2"));
+                        modal.show();
+                    });
+                </script>';
+
+        } if($matricula){
+            $verifica= $dbDB->prepare("SELECT re FROM ELIPSE_E3.dbo.eleitor_cipa WHERE re = :matricula");
+            $verifica->bindParam(':matricula', $matricula);
+            $verifica->execute();
+            $verificado= $verifica->fetch(PDO::FETCH_ASSOC);
         }
-    }             
+        if($verificado){
+            echo'<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+                        modal.show();
+                    });
+                </script>';
+
+            }   
+    }
+                 
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -38,51 +60,102 @@
 
 <body class="background">
 
-    <header class="card-body d-flex justify-content-center shadow bg-light mb-5 p-0">
+    <header class="card-body d-flex justify-content-center shadow bg-light mb-3 p-0">
             <img src="img/logos.png" alt="" class="col-3  ">
     </header>
+   
 
-        <div class=" card-body col-sm-12 d-flex justify-content-center">
-            <div class="card col-sm-11 p-3 border-0 container-DataWake lista-DataWake">
-                <h5 class="drop "> <img class="imp" src="img/imp_verde.png" alt=""> VOTAÇÃO REMOTA</h5>
-                <ul>
-                    <li>Permitido votar apenas <strong>uma vez</strong></li>
-                    <li class="mt-2">Votação interna!</li>
-                </ul>
+    <div class=" card-body col-sm-12 d-flex justify-content-center pt-0 mb-5">
+        <div class="card col-sm-11 border-0 lista-DataWake bg-transparent d-flex align-items-end pt-0 pe-0">
+            <div class="card card-body col-sm-2 container-adm align-items-center p-1 ">
+                <a href="login.php">Painel Administrador </a>
             </div>
         </div>
+    </div>
+    <div class=" card-body col-sm-12 d-flex justify-content-center">
+        <div class="card col-sm-11 p-3 border-0 container-DataWake lista-DataWake">
+            <h5 class="drop "> <img class="imp" src="img/imp_verde.png" alt=""> VOTAÇÃO REMOTA</h5>
+            <ul>
+                <li>Permitido votar apenas <strong>uma vez</strong></li>
+                <li class="mt-2">Votação interna!</li>
+            </ul>
+        </div>
+    </div>
         <!------------------------------------------RE------------------------------------------------>
         <div class="card-body col-sm-12 d-flex justify-content-center mt-5 mb-5 ">
             <div class="card col-sm-11 p-4 border-0 container-DataWake">
                 <form action="" method="POST" class="row g-3">
                     <div class="col-md-3">
                         <label for="re" class="form-label">RE:</label>
-                        <input type="number" class="form-control" name="mat" > 
+                        <input type="number" class="form-control" name="mat" id="matricula" > 
                     </div>
                     <div class="col-md-6">
 
                         <label for="nome" class="form-label">NOME:</label>
-                            <?php 
-                                echo '<input type="text" class="form-control" disabled value="'.$_SESSION['nome'].'">';
+                            <?php
+                                echo '<input type="text" id="nome"  class="form-control" disabled value="'.$_SESSION['nome'].'">';
                             ?>
 
                     </div>
                     <div class="col-md-3">
                         <label for="nome" class="form-label">Seu RE:</label>
                         <?php
-                            echo '<input type="text" class="form-control" disabled value="' .  $_SESSION['matricula'] . '">';
+                            echo '<input type="text" id="re" class="form-control" disabled value="' .  $_SESSION['matricula'] . '">';
                         ?>
                     </div>
-                    <div class="col-sm-3 d-flex mt-4">
-                        <button class=" btn btn-outline-success me-5" type="submit">Consultar</button>
-                        <a href="votoRemoto.php" class="btn btn-success">Acessar</a>
+                    <div class="col-sm-4 d-flex mt-4">
+                        
+                        <button class=" btn btn-outline-success me-5" id="consulta" type="submit">Consultar</button>
+
+                        <?php
+                        if($verificado){
+                            echo'<div class="card bg-danger align-items-center p-1 pe-3 ps-3 ">
+                                    <p class="m-0 fw-bolder">Acesse com outro RE:</p>
+                                </div>';
+                        }else{
+                            echo'<a href="votoRemoto.php" class="btn btn-success" id="btn_acesso" >Acessar</a>';
+                        }
+                        ?>
                     </div>
                     
                 </form>
             </div>
         </div>
 
-     
+<!-- Modal usuario repetido-->
+    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                </div>
+            <div class="modal-body">
+                "Você já votou uma vez, Você não pode mais volta";
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal usuario não ecncontrado-->
+
+    <div class="modal fade " id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                </div>
+            <div class="modal-body">
+                "O usúario não foi encontrado, digite novamente.";
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btn1">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!---------------------FOOTER---------------------->
     <div class="card-body d-flex justify-content-center bg-light p-0">
         <div class="card-header border-0 d-flex bg-transparent lista-DataWake">
@@ -97,6 +170,7 @@
         </div>
     </div>
 
+    <script src="main.js"></script>
 </body>
 
 </html>

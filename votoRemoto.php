@@ -101,6 +101,8 @@ echo "Nome: " . $nome . "<br>";
         
         </div>
     </main>
+
+    
     <!---------------------FOOTER---------------------->
     <div class="card-body d-flex justify-content-center bg-light p-0">
         <div class="card-header border-0 d-flex bg-transparent lista-DataWake">
